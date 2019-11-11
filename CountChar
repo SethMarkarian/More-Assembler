@@ -1,0 +1,33 @@
+foo		sub		sp, sp, #24 ;allocate enough space for 5 chars
+		mov		r2, #'h'
+		str		r2, [sp, #0]
+		mov		r2, #'e'
+		str		r2, [sp, #4]
+		mov		r2, #'l'
+		str		r2, [sp, #8]
+		mov		r2, #'l'
+		str		r2, [sp, #12]
+		mov		r2, #'o'
+		str		r2, [sp, #16]
+		mov		r2, #0 ;set end of char* to zero
+		str		r2, [sp, #20]
+		bl		countChar
+		end
+		
+countChar	mov		r2, #0
+		bl		loop
+		
+loop		ldr		r3, [sp, r2]
+		cmp		r3, #0 ;finds end
+		beq		done ;finds null at end of string
+		add		r12, r12, #1
+		add		r2, r2, #4
+		b		loop
+		
+		
+done		mov		r14, r12
+		end
+		
+		;str		r2, [r1, r2]  @ address mode: offset. Store the value found in R2 (0x03) to the memory address found in R1 with the offset R2 (0x03). Base register unmodified.
+		;str		r2, [r1, r2]! @ address mode: pre-indexed. Store value found in R2 (0x03) to the memory address found in R1 with the offset R2 (0x03). Base register modified: R1 = R1+R2.
+		;ldr		r3, [r1], r2  @ address mode: post-indexed. Load value at memory address found in R1 to register R3. Then modify base register: R1 = R1+R2.
